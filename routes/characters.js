@@ -34,17 +34,7 @@ router.post('/', checkCharactersInput, async (req, res) => {
     const body = req.body;
 
     try{
-        const resultLastid = await db.query("SELECT MAX(id) FROM characters");
-        let lastid = resultLastid.rows[0].max;
-
-        if(lastid == null){
-            lastid = 1
-        }
-        else{
-            lastid = lastid + 1;
-        }
-
-        const result = await db.query('INSERT INTO characters VALUES ($1, $2, $3, $4, $5, $6)', [lastid, body.name, body.class_id, body.role_id, body.ilvl, body.rio]);
+        const result = await db.query('INSERT INTO characters (name, class_id, role_id, ilvl, rio) VALUES ($1, $2, $3, $4, $5)', [body.name, body.class_id, body.role_id, body.ilvl, body.rio]);
         if(result.rowCount == 0){
             throw new Error("Character has not been added");
         }
