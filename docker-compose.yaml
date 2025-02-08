@@ -1,0 +1,48 @@
+version: "3.9"
+services:  
+  postgresdb:
+    image: postgres
+    restart: always
+    env_file: ./.env
+    environment:
+      - POSTGRES_USER=$DB_USERNAME
+      - POSTGRES_PASSWORD=$DB_PASSWORD
+      - POSTGRES_DB=$DB_NAME
+    ports:
+      - 5432:5432
+    volumes:
+      - db:/var/lib/postgres
+  
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    env_file: ./.env
+    ports:
+      - 5050:80
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=$PGADMIN_EMAIL
+      - PGADMIN_DEFAULT_PASSWORD=$PGADMIN_PASSWORD
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+
+  app:
+    depends_on:
+      - postgresdb
+      - pgadmin
+    build: .
+    restart: always
+    env_file: ./.env
+    environment:
+      - DB_HOST=postgresdb
+      - DB_USERNAME=$DB_USERNAME
+      - DB_PASSWORD=$DB_PASSWORD
+      - DB_PORT=$DB_PORT
+      - DB_NAME=$DB_NAME
+    ports:
+      - $PORT:$PORT
+    stdin_open: true
+    tty: true
+
+volumes:
+  db:
+  pgadmin:
