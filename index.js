@@ -14,8 +14,12 @@ app.use(cors({
 }))
 
 const charactersRouter = require('./routes/characters');
+const classRouter = require('./routes/class');
+const canbeRouter = require('./routes/canbe');
 
 app.use('/characters', charactersRouter);
+app.use('/class', classRouter);
+app.use('/canbe', canbeRouter);
 
 app.listen(port, () => {
     console.log(`App running on ${port}`);
