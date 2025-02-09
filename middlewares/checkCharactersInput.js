@@ -17,7 +17,7 @@ const checkCharactersInput = (req, res, next) => {
     }
 
     if(body.ilvl == undefined){
-        res.status(400).send({ "message": "The filed 'ilvl' is required" });
+        res.status(400).send({ "message": "The field 'ilvl' is required" });
         return;
     }
 
