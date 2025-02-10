@@ -40,10 +40,7 @@ router.post('/', async (req, res) => {
             return;
         }
 
-        let result = await db.query('INSERT INTO parties (party_name) VALUES ($1) RETURNING id', [body.name])
-        if(result.rowCount == 0){
-            throw new Error("Party has not been added");
-        }
+        const result = await db.query('INSERT INTO parties (party_name) VALUES ($1) RETURNING id', [body.name])
         
         const id = result.rows[0].id;
 
@@ -120,12 +117,8 @@ router.delete("/:id", async (req, res) => {
     const id = req.params.id;
 
     try{
-        let result = await db.query("DELETE FROM compose WHERE parties_id = $1", [id]);
-
-        result = await db.query("DELETE FROM parties WHERE id = $1", [id]);
-        if(result.rowCount == 0){
-            throw new Error("Party has not been deleted");
-        }
+        await db.query("DELETE FROM compose WHERE parties_id = $1", [id]);
+        await db.query("DELETE FROM parties WHERE id = $1", [id]);
         res.status(200).send({ "message": "Deleted" });
     }
     catch(err){
