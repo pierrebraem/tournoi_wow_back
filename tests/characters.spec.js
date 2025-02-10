@@ -73,7 +73,7 @@ describe('characters', () => {
             expect(response.status).toBe(200);
 
             expect(JSON.stringify(response.body)).toBe(JSON.stringify(mockUser));
-            expect(db.query).toHaveBeenCalledWith('SELECT characters.id, characters.name, class.label class, roles.label role, characters.ilvl, characters.rio FROM characters INNER JOIN class ON characters.class_id = class.id INNER JOIN roles ON characters.role_id = roles.id WHERE characters.id = $1', [id]);
+            expect(db.query).toHaveBeenCalledWith('SELECT characters.id, characters.name, class.id class_id, class.label class, roles.id roles_id, roles.label role, characters.ilvl, characters.rio FROM characters INNER JOIN class ON characters.class_id = class.id INNER JOIN roles ON characters.role_id = roles.id WHERE characters.id = $1', [id]);
         });
     });
 
