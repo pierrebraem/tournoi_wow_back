@@ -14,12 +14,16 @@ app.use(cors({
 }))
 
 const charactersRouter = require('./routes/characters');
+const partiesRouter = require('./routes/parties');
 const classRouter = require('./routes/class');
 const canbeRouter = require('./routes/canbe');
+const composeRouter = require('./routes/compose');
 
 app.use('/characters', charactersRouter);
+app.use('/parties', partiesRouter);
 app.use('/class', classRouter);
 app.use('/canbe', canbeRouter);
+app.use('/compose', composeRouter);
 
 app.listen(port, () => {
     console.log(`App running on ${port}`);
