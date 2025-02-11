@@ -3,6 +3,20 @@ const router = express.Router();
 const checkTournamentsInput = require("../middlewares/checkTournamentsInput");
 const db = require('../db');
 
+// Route pour avoir tous les tournois
+router.get('/', async (req, res) => {
+    const body = req.body;
+
+    try{
+        const result = await db.query("SELECT * FROM tournament");
+        res.json(result.rows);
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).send({ "message": "Internal Server Error" });
+    }
+});
+
 // Route pour ajouter un tournoi
 router.post('/', checkTournamentsInput, async (req, res) => {
     const body = req.body;
