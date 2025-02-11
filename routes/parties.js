@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const checkPartiesInput = require("../middlewares/checkPartiesInput");
 const db = require('../db');
 
 // Route pour afficher toutes les groupes
@@ -29,44 +30,16 @@ router.get('/:id', async (req, res) => {
 });
 
 // Route pour ajouter un groupe
-router.post('/', async (req, res) => {
+router.post('/', checkPartiesInput, async (req, res) => {
     const body = req.body;
-    let hasTank = false;
-    let hasHealer = false;
 
     try{
-        if(body.characters.length > 5){
-            res.status(400).send({ "message": "Limit of characters (5) per party exceeded" });
-            return;
-        }
-
         const result = await db.query('INSERT INTO parties (party_name) VALUES ($1) RETURNING id', [body.name])
         
         const id = result.rows[0].id;
 
-        for(const character of body.characters){
-            if(hasTank){
-                res.status(400).send({ "message": "Limit of Tanks (1) per party exceeded" });
-                return;
-            }
-        
-            if(hasHealer){
-                res.status(400).send({ "message": "Limit of Healers (1) per party exceeded" });
-                return;
-            }
-        
-            const result = await db.query('INSERT INTO compose VALUES ($1, $2)', [id, character.id]);
-            if(result.rowCount == 0){
-                throw new Error("Character has not been added to the party");
-            }
-        
-            if(character.roles_id == 1){
-                hasTank = true;
-            }
-        
-            if(character.roles_id == 2 || character.roles_id == 5){
-                hasHealer = true;
-            }
+        for(const character of body.characters){        
+            await db.query('INSERT INTO compose VALUES ($1, $2)', [id, character.id]);
         }
 
         res.status(201).send({ "message": "Created" });
@@ -78,7 +51,7 @@ router.post('/', async (req, res) => {
 });
 
 // Route pour mettre à jour un groupe
-router.put('/:id', async (req, res) => {
+router.put('/:id', checkPartiesInput, async (req, res) => {
     const id = req.params.id;
     const body = req.body;
 
