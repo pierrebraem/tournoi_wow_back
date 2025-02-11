@@ -15,15 +15,23 @@ app.use(cors({
 
 const charactersRouter = require('./routes/characters');
 const partiesRouter = require('./routes/parties');
+const tournamentsRouter = require('./routes/tournaments');
 const classRouter = require('./routes/class');
 const canbeRouter = require('./routes/canbe');
 const composeRouter = require('./routes/compose');
+const dungeonRouter = require('./routes/dungeos');
+const registeredRouter = require('./routes/registered');
+const challengeRouter = require('./routes/challenge');
 
 app.use('/characters', charactersRouter);
 app.use('/parties', partiesRouter);
+app.use('/tournaments', tournamentsRouter);
 app.use('/class', classRouter);
 app.use('/canbe', canbeRouter);
 app.use('/compose', composeRouter);
+app.use('/dungeos', dungeonRouter);
+app.use('/registered', registeredRouter);
+app.use('/challenge', challengeRouter);
 
 app.listen(port, () => {
     console.log(`App running on ${port}`);
