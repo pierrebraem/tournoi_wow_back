@@ -27,13 +27,10 @@ router.post('/', checkTournamentsInput, async (req, res) => {
         const id = result.rows[0].id;
 
         for(const dungeon of body.dungeons){
-            console.log(dungeon);
-            await db.query("INSERT INTO challenge VALUES ($1, $2)", [dungeon.id, id]);
-        }
-
-        for(const party of body.parties){
-            const date = new Date();
-            await db.query('INSERT INTO registered VALUES ($1, $2, $3)', [id, party.id, "2025-02-11"]);
+            for(const party of body.parties){
+                await db.query("INSERT INTO challenge VALUES ($1, $2, $3)", [dungeon.id, id, party.id]);
+                await db.query('INSERT INTO registered VALUES ($1, $2, $3)', [id, party.id, "2025-02-11"]);
+            }
         }
         res.status(201).send({ "message": "Created" });
     }
