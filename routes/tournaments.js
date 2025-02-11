@@ -43,4 +43,20 @@ router.post('/', checkTournamentsInput, async (req, res) => {
     }
 });
 
+// Route pour supprimer un tournoi
+router.delete("/:id", async (req, res) => {
+    const id = req.params.id;
+
+    try{
+        await db.query("DELETE FROM challenge WHERE tournament_id = $1", [id]);
+        await db.query("DELETE FROM registered WHERE tournament_id = $1", [id]);
+        await db.query("DELETE FROM tournament WHERE id = $1", [id]);
+        res.status(200).send({ "message": "Deleted" });
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).send({ "message": "Internal Server Error" });
+    }
+})
+
 module.exports = router;
