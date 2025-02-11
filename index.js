@@ -21,6 +21,7 @@ const canbeRouter = require('./routes/canbe');
 const composeRouter = require('./routes/compose');
 const dungeonRouter = require('./routes/dungeos');
 const registeredRouter = require('./routes/registered');
+const challengeRouter = require('./routes/challenge');
 
 app.use('/characters', charactersRouter);
 app.use('/parties', partiesRouter);
@@ -30,6 +31,7 @@ app.use('/canbe', canbeRouter);
 app.use('/compose', composeRouter);
 app.use('/dungeos', dungeonRouter);
 app.use('/registered', registeredRouter);
+app.use('/challenge', challengeRouter);
 
 app.listen(port, () => {
     console.log(`App running on ${port}`);
