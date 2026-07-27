@@ -1,6 +1,6 @@
 services:  
   postgresdb:
-    image: postgres
+    image: postgres:18
     restart: always
     env_file: ./.env
     environment:
@@ -11,23 +11,11 @@ services:
       - 5432:5432
     volumes:
       - db:/var/lib/postgres
-  
-  pgadmin:
-    image: dpage/pgadmin4
-    restart: always
-    env_file: ./.env
-    ports:
-      - 5050:80
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=$PGADMIN_EMAIL
-      - PGADMIN_DEFAULT_PASSWORD=$PGADMIN_PASSWORD
-    volumes:
-      - pgadmin:/var/lib/pgadmin
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
   app:
     depends_on:
       - postgresdb
-      - pgadmin
     build: .
     volumes:
       - ./:/app
@@ -46,4 +34,3 @@ services:
 
 volumes:
   db:
-  pgadmin:
