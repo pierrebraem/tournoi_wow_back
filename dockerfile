@@ -2,10 +2,12 @@ FROM node:26-alpine
 
 WORKDIR /app
 
-COPY package.json /app
+COPY package.json ./
 
-RUN npm install
+RUN npm install --include=dev
+
+ENV NODE_ENV=development
 
 COPY ./ /app
 
-CMD ["npx", "nodemon", "--legacy-watch", "index.js"]
+CMD ["npm", "run", "dev"]
