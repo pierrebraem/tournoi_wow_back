@@ -20,8 +20,24 @@ router.get('/:id', async (req, res) => {
     const id = req.params.id;
 
     try{
-        const result = await db.query("SELECT characters.id, characters.name, class.id class_id, class.label class, roles.id roles_id, roles.label role, characters.ilvl, characters.rio FROM characters INNER JOIN class ON characters.class_id = class.id INNER JOIN roles ON characters.role_id = roles.id WHERE characters.id = $1", [id]);
-        res.json(result.rows);
+        const result = await db.query("SELECT characters.id, characters.name, class.id class_id, class.label class_label, roles.id role_id, roles.label role_label, characters.ilvl, characters.rio FROM characters INNER JOIN class ON characters.class_id = class.id INNER JOIN roles ON characters.role_id = roles.id WHERE characters.id = $1", [id]);
+        const character = result.rows[0]
+
+        res.json({
+            id: character.id,
+            name: character.name,
+            class: {
+                id: character.class_id,
+                label: character.class_label,
+            },
+            role: {
+                id: character.role_id,
+                label: character.role_label,
+            },
+            ilvl: character.ilvl,
+            rio: character.rio,
+        })
+
     }
     catch(err){
         console.log(err);
