@@ -21,24 +21,24 @@ describe('characters', () => {
                 {
                     id: 1,
                     name: "Stealthy Frost",
-                    class: "Paladin",
-                    role: "Tank",
+                    class: { id: 2, label: "Paladin" },
+                    role: { id: 1, label: "Tank"},
                     ilbl: 456,
                     rio: 3
                 },
                 {
                     id: 2,
                     name: "Savage Bolt",
-                    class: "Guerrier",
-                    role: "Spécialiste des dégâts",
+                    class: { id: 1, label: "Guerrier" },
+                    role: { id: 3, label: "Spécialiste des dégâts" },
                     ilbl: 254,
                     rio: 145
                 },
                 {
                     id: 3,
                     name: "Swift Dagger",
-                    class: "Mage",
-                    role: "Dégâts",
+                    class: { id: 7, label: "Mage" },
+                    role: { id: 4, label: "Dégâts" },
                     ilbl: 600,
                     rio: 3000
                 },
@@ -56,24 +56,37 @@ describe('characters', () => {
 
         it('Get character details with id', async () => {
             const id = "2";
-            const mockUser = [
+
+            const mockUsers = [
                 {
                     id: 2,
                     name: "Savage Bolt",
-                    class: "Guerrier",
-                    role: "Spécialiste des dégâts",
-                    ilbl: 254,
-                    rio: 145
-                },
-            ];
+                    class_id: 1,
+                    class_label: "Guerrier",
+                    role_id: 3,
+                    role_label: "Spécialiste des dégâts",
+                    ilvl: 254,
+                    rio: 145,
+                }
+            ]
 
-            db.query.mockResolvedValue({ rows: mockUser });
+            const expectedUser = 
+                {
+                    id: 2,
+                    name: "Savage Bolt",
+                    class: { id: 1, label: "Guerrier" },
+                    role:{ id: 3, label: "Spécialiste des dégâts" },
+                    ilvl: 254,
+                    rio: 145,
+                }
+
+            db.query.mockResolvedValue({ rows: mockUsers });
 
             const response = await request(app).get('/characters/' + id);
             expect(response.status).toBe(200);
 
-            expect(JSON.stringify(response.body)).toBe(JSON.stringify(mockUser));
-            expect(db.query).toHaveBeenCalledWith('SELECT characters.id, characters.name, class.id class_id, class.label class, roles.id roles_id, roles.label role, characters.ilvl, characters.rio FROM characters INNER JOIN class ON characters.class_id = class.id INNER JOIN roles ON characters.role_id = roles.id WHERE characters.id = $1', [id]);
+            expect(JSON.stringify(response.body)).toBe(JSON.stringify(expectedUser));
+            expect(db.query).toHaveBeenCalledWith('SELECT characters.id, characters.name, class.id class_id, class.label class_label, roles.id role_id, roles.label role_label, characters.ilvl, characters.rio FROM characters INNER JOIN class ON characters.class_id = class.id INNER JOIN roles ON characters.role_id = roles.id WHERE characters.id = $1', [id]);
         });
     });
 
