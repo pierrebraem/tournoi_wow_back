@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db');
 
-// Route pour afficher tous les personnages d'un groupe
+// Route pour afficher tous les personnages d'une équipe
 router.get('/:id', async (req, res) => {
     const id = req.params.id;
 

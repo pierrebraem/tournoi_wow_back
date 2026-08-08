@@ -3,7 +3,7 @@ const router = express.Router();
 const checkPartiesInput = require("../middlewares/checkPartiesInput");
 const db = require('../db');
 
-// Route pour afficher toutes les groupes
+// Route pour afficher toutes les équipes
 router.get('/', async (req, res) => {
     try{
         const result = await db.query("SELECT * FROM parties");
@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Route pour afficher les détails d'un groupe
+// Route pour afficher les détails d'une équipe
 router.get('/:id', async (req, res) => {
     const id = req.params.id;
 
@@ -31,7 +31,7 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// Route pour ajouter un groupe
+// Route pour ajouter une équipe
 router.post('/', checkPartiesInput, async (req, res) => {
     const body = req.body;
 
@@ -52,7 +52,7 @@ router.post('/', checkPartiesInput, async (req, res) => {
     }
 });
 
-// Route pour mettre à jour un groupe
+// Route pour mettre à jour une équipe
 router.put('/:id', checkPartiesInput, async (req, res) => {
     const id = req.params.id;
     const body = req.body;
@@ -87,7 +87,7 @@ router.put('/:id', checkPartiesInput, async (req, res) => {
     }
 });
 
-// Route pour supprimer un groupe
+// Route pour supprimer une équipe
 router.delete("/:id", async (req, res) => {
     const id = req.params.id;
 
