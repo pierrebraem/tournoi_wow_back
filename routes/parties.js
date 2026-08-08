@@ -21,7 +21,9 @@ router.get('/:id', async (req, res) => {
 
     try{
         const result = await db.query("SELECT * FROM parties WHERE id = $1", [id]);
-        res.json(result.rows);
+        const party = result.rows[0]
+        
+        res.json(party)
     }
     catch(err){
         console.log(err);
