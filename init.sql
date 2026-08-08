@@ -32,7 +32,7 @@ CREATE TABLE registered(
 
 CREATE TABLE parties (
     id SERIAL PRIMARY KEY NOT NULL,
-    party_name VARCHAR(50) NOT NULL
+    name VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE compose (
@@ -156,7 +156,7 @@ INSERT INTO characters (name, class_id, role_id, ilvl, rio) VALUES
 ('Stalwart Ram', 5, 3, 400, 500),
 ('Fearless Leopard', 11, 3, 200, 3500);
 
-INSERT INTO parties (party_name) VALUES
+INSERT INTO parties (name) VALUES
 ('Groupe 1'),
 ('Groupe 2');
 
