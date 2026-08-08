@@ -36,7 +36,7 @@ router.post('/', checkPartiesInput, async (req, res) => {
     const body = req.body;
 
     try{
-        const result = await db.query('INSERT INTO parties (party_name) VALUES ($1) RETURNING id', [body.name])
+        const result = await db.query('INSERT INTO parties (name) VALUES ($1) RETURNING id', [body.name])
         
         const id = result.rows[0].id;
 
@@ -63,7 +63,7 @@ router.put('/:id', checkPartiesInput, async (req, res) => {
             return;
         }
 
-        await db.query('UPDATE parties SET party_name = $2 WHERE id = $1', [id, body.name]);
+        await db.query('UPDATE parties SET name = $2 WHERE id = $1', [id, body.name]);
         
         let result = await db.query('SELECT * FROM compose WHERE parties_id = $1', [id]);
 
