@@ -6,7 +6,7 @@ router.get('/:id', async (req, res) => {
     const id = req.params.id;
 
     try{
-        const result = await db.query('SELECT parties.id, parties.party_name FROM registered INNER JOIN parties ON registered.parties_id = parties.id WHERE registered.tournament_id = $1', [id]);
+        const result = await db.query('SELECT parties.id, parties.name FROM registered INNER JOIN parties ON registered.parties_id = parties.id WHERE registered.tournament_id = $1', [id]);
         res.json(result.rows);
     }
     catch(err){

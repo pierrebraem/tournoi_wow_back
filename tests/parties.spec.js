@@ -20,11 +20,11 @@ describe('parties', () => {
             const mockParties = [
                 {
                     id: 1,
-                    party_name: "Groupe 1"
+                    name: "Groupe 1"
                 },
                 {
                     id: 2,
-                    party_name: "Groupe 2"
+                    name: "Groupe 2"
                 }
             ];
 
@@ -38,16 +38,14 @@ describe('parties', () => {
             expect(db.query).toHaveBeenCalledWith('SELECT * FROM parties');
         });
 
-        it('Get character details with id', async () => {
+        it('Get party details with id', async () => {
             const id = "2";
-            const mockParty = [
-                {
+            const mockParty = {
                     id: 2,
-                    party_name: "Groupe 2",
-                },
-            ];
+                    name: "Groupe 2",
+                }
         
-            db.query.mockResolvedValue({ rows: mockParty });
+            db.query.mockResolvedValue({ rows: [mockParty] });
         
             const response = await request(app).get('/parties/' + id);
             expect(response.status).toBe(200);
@@ -88,7 +86,7 @@ describe('parties', () => {
             expect(response.status).toBe(201);
             expect(response.body).toEqual({"message": "Created"});
             expect(db.query).toHaveBeenCalledWith(
-                'INSERT INTO parties (party_name) VALUES ($1) RETURNING id', 
+                'INSERT INTO parties (name) VALUES ($1) RETURNING id', 
                 [newParty.name]
             );
             expect(db.query).toHaveBeenCalledWith(
@@ -306,7 +304,7 @@ describe('parties', () => {
             expect(response.status).toBe(200);
             expect(response.body).toEqual({"message": "Updated"});
             expect(db.query).toHaveBeenCalledWith(
-                'UPDATE parties SET party_name = $2 WHERE id = $1',
+                'UPDATE parties SET name = $2 WHERE id = $1',
                 [id, updatedParty.name]
             );
             expect(db.query).toHaveBeenCalledWith(

@@ -3,7 +3,7 @@ const router = express.Router();
 const checkPartiesInput = require("../middlewares/checkPartiesInput");
 const db = require('../db');
 
-// Route pour afficher toutes les groupes
+// Route pour afficher toutes les équipes
 router.get('/', async (req, res) => {
     try{
         const result = await db.query("SELECT * FROM parties");
@@ -15,13 +15,15 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Route pour afficher les détails d'un groupe
+// Route pour afficher les détails d'une équipe
 router.get('/:id', async (req, res) => {
     const id = req.params.id;
 
     try{
         const result = await db.query("SELECT * FROM parties WHERE id = $1", [id]);
-        res.json(result.rows);
+        const party = result.rows[0]
+        
+        res.json(party)
     }
     catch(err){
         console.log(err);
@@ -29,12 +31,12 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// Route pour ajouter un groupe
+// Route pour ajouter une équipe
 router.post('/', checkPartiesInput, async (req, res) => {
     const body = req.body;
 
     try{
-        const result = await db.query('INSERT INTO parties (party_name) VALUES ($1) RETURNING id', [body.name])
+        const result = await db.query('INSERT INTO parties (name) VALUES ($1) RETURNING id', [body.name])
         
         const id = result.rows[0].id;
 
@@ -50,7 +52,7 @@ router.post('/', checkPartiesInput, async (req, res) => {
     }
 });
 
-// Route pour mettre à jour un groupe
+// Route pour mettre à jour une équipe
 router.put('/:id', checkPartiesInput, async (req, res) => {
     const id = req.params.id;
     const body = req.body;
@@ -61,7 +63,7 @@ router.put('/:id', checkPartiesInput, async (req, res) => {
             return;
         }
 
-        await db.query('UPDATE parties SET party_name = $2 WHERE id = $1', [id, body.name]);
+        await db.query('UPDATE parties SET name = $2 WHERE id = $1', [id, body.name]);
         
         let result = await db.query('SELECT * FROM compose WHERE parties_id = $1', [id]);
 
@@ -85,7 +87,7 @@ router.put('/:id', checkPartiesInput, async (req, res) => {
     }
 });
 
-// Route pour supprimer un groupe
+// Route pour supprimer une équipe
 router.delete("/:id", async (req, res) => {
     const id = req.params.id;
 
