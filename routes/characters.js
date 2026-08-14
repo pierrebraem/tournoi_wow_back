@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
         res.json(result.rows);
     }
     catch(err){
-        console.log(err);
+        console.error(err);
         res.status(500).send({ "message": "Internal Server Error" });
     }
 });
@@ -21,7 +21,7 @@ router.get('/:id', async (req, res) => {
 
     try{
         const result = await db.query("SELECT characters.id, characters.name, class.id class_id, class.label class_label, roles.id role_id, roles.label role_label, characters.ilvl, characters.rio FROM characters INNER JOIN class ON characters.class_id = class.id INNER JOIN roles ON characters.role_id = roles.id WHERE characters.id = $1", [id]);
-        const character = result.rows[0]
+        const character = result.rows[0];
 
         res.json({
             id: character.id,
@@ -36,11 +36,11 @@ router.get('/:id', async (req, res) => {
             },
             ilvl: character.ilvl,
             rio: character.rio,
-        })
+        });
 
     }
     catch(err){
-        console.log(err);
+        console.error(err);
         res.status(500).send({ "message": "Internal Server Error" });
     }
 });
@@ -54,7 +54,7 @@ router.post('/', checkCharactersInput, async (req, res) => {
         res.status(201).send({ "message": "Created" });
     }
     catch(err){
-        console.log(err);
+        console.error(err);
         res.status(500).send({ "message": "Internal Server Error" });
     }
 });
@@ -70,7 +70,7 @@ router.put("/:id", checkCharactersInput, async (req, res) => {
 
     }
     catch(err){
-        console.log(err);
+        console.error(err);
         res.status(500).send({ "message": "Internal Server Error" });
     }
 });
@@ -84,7 +84,7 @@ router.delete("/:id", async (req, res) => {
         res.status(200).send({ "message": "Deleted" });
     }
     catch(err){
-        console.log(err);
+        console.error(err);
         res.status(500).send({ "message": "Internal Server Error" });
     }
 });

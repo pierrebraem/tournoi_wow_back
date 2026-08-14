@@ -70,7 +70,7 @@ describe('compose', () => {
             expect(db.query).toHaveBeenCalledWith(
                 'SELECT characters.id, characters.name, class.id class_id, class.label class_label, roles.id role_id, roles.label role_label FROM compose INNER JOIN characters ON compose.characters_id = characters.id INNER JOIN class ON characters.class_id = class.id INNER JOIN roles ON characters.role_id = roles.id WHERE compose.parties_id = $1',
                 [id]
-            )
+            );
         });
     });
-})
+});

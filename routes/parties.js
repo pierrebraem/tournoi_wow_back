@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
         res.json(result.rows);
     }
     catch(err){
-        console.log(err);
+        console.error(err);
         res.status(500).send({ "message": "Internal Server Error" });
     }
 });
@@ -21,12 +21,12 @@ router.get('/:id', async (req, res) => {
 
     try{
         const result = await db.query("SELECT * FROM parties WHERE id = $1", [id]);
-        const party = result.rows[0]
+        const party = result.rows[0];
         
-        res.json(party)
+        res.json(party);
     }
     catch(err){
-        console.log(err);
+        console.error(err);
         res.status(500).send({ "message": "Internal Server Error" });
     }
 });
@@ -36,7 +36,7 @@ router.post('/', checkPartiesInput, async (req, res) => {
     const body = req.body;
 
     try{
-        const result = await db.query('INSERT INTO parties (name) VALUES ($1) RETURNING id', [body.name])
+        const result = await db.query('INSERT INTO parties (name) VALUES ($1) RETURNING id', [body.name]);
         
         const id = result.rows[0].id;
 
@@ -47,7 +47,7 @@ router.post('/', checkPartiesInput, async (req, res) => {
         res.status(201).send({ "message": "Created" });
     }
     catch(err){
-        console.log(err);
+        console.error(err);
         res.status(500).send({ "message": "Internal Server Error" });
     }
 });
@@ -65,7 +65,7 @@ router.put('/:id', checkPartiesInput, async (req, res) => {
 
         await db.query('UPDATE parties SET name = $2 WHERE id = $1', [id, body.name]);
         
-        let result = await db.query('SELECT * FROM compose WHERE parties_id = $1', [id]);
+        const result = await db.query('SELECT * FROM compose WHERE parties_id = $1', [id]);
 
         const data = result.rows;
         const charactersDeleted = data.filter((compose) => !body.characters.some((character) => character.id == compose.characters_id));
@@ -82,7 +82,7 @@ router.put('/:id', checkPartiesInput, async (req, res) => {
         res.status(200).send({ "message": "Updated" });
     }
     catch(err){
-        console.log(err);
+        console.error(err);
         res.status(500).send({ "message": "Internal Server Error" });
     }
 });
@@ -97,7 +97,7 @@ router.delete("/:id", async (req, res) => {
         res.status(200).send({ "message": "Deleted" });
     }
     catch(err){
-        console.log(err);
+        console.error(err);
         res.status(500).send({ "message": "Internal Server Error" });
     }
 });

@@ -12,7 +12,7 @@ jest.mock('../db');
 
 afterEach(() => {
     jest.clearAllMocks();
-})
+});
 
 describe('characters', () => {
     describe('GET characters', () => {
@@ -68,7 +68,7 @@ describe('characters', () => {
                     ilvl: 254,
                     rio: 145,
                 }
-            ]
+            ];
 
             const expectedUser = 
                 {
@@ -78,7 +78,7 @@ describe('characters', () => {
                     role:{ id: 3, label: "Spécialiste des dégâts" },
                     ilvl: 254,
                     rio: 145,
-                }
+                };
 
             db.query.mockResolvedValue({ rows: mockUsers });
 
@@ -98,8 +98,8 @@ describe('characters', () => {
                 role_id: 1,
                 ilvl: 300,
                 rio: 50
-            }
-            const mockResponse = { id: 1, ...newCharacter }
+            };
+            const mockResponse = { id: 1, ...newCharacter };
     
             db.query.mockResolvedValue({ rows: [mockResponse] });
     
@@ -122,8 +122,8 @@ describe('characters', () => {
                 role_id: 1,
                 ilvl: 300,
                 rio: 50
-            }
-            const mockResponse = { id: 1, ...newCharacter }
+            };
+            const mockResponse = { id: 1, ...newCharacter };
     
             db.query.mockResolvedValue({ rows: [mockResponse] });
     
@@ -142,8 +142,8 @@ describe('characters', () => {
                 role_id: 1,
                 ilvl: 300,
                 rio: 50
-            }
-            const mockResponse = { id: 1, ...newCharacter }
+            };
+            const mockResponse = { id: 1, ...newCharacter };
     
             db.query.mockResolvedValue({ rows: [mockResponse] });
     
@@ -162,8 +162,8 @@ describe('characters', () => {
                 class_id: 2,
                 ilvl: 300,
                 rio: 50
-            }
-            const mockResponse = { id: 1, ...newCharacter }
+            };
+            const mockResponse = { id: 1, ...newCharacter };
     
             db.query.mockResolvedValue({ rows: [mockResponse] });
     
@@ -182,8 +182,8 @@ describe('characters', () => {
                 class_id: 2,
                 role_id: 1,
                 rio: 50
-            }
-            const mockResponse = { id: 1, ...newCharacter }
+            };
+            const mockResponse = { id: 1, ...newCharacter };
     
             db.query.mockResolvedValue({ rows: [mockResponse] });
     
@@ -202,8 +202,8 @@ describe('characters', () => {
                 class_id: 2,
                 role_id: 1,
                 ilvl: 300
-            }
-            const mockResponse = { id: 1, ...newCharacter }
+            };
+            const mockResponse = { id: 1, ...newCharacter };
     
             db.query.mockResolvedValue({ rows: [mockResponse] });
     
@@ -223,8 +223,8 @@ describe('characters', () => {
                 role_id: 1,
                 ilvl: -12,
                 rio: 50
-            }
-            const mockResponse = { id: 1, ...newCharacter }
+            };
+            const mockResponse = { id: 1, ...newCharacter };
     
             db.query.mockResolvedValue({ rows: [mockResponse] });
     
@@ -244,8 +244,8 @@ describe('characters', () => {
                 role_id: 1,
                 ilvl: 650,
                 rio: 50
-            }
-            const mockResponse = { id: 1, ...newCharacter }
+            };
+            const mockResponse = { id: 1, ...newCharacter };
     
             db.query.mockResolvedValue({ rows: [mockResponse] });
     
@@ -265,8 +265,8 @@ describe('characters', () => {
                 role_id: 1,
                 ilvl: 300,
                 rio: -3
-            }
-            const mockResponse = { id: 1, ...newCharacter }
+            };
+            const mockResponse = { id: 1, ...newCharacter };
     
             db.query.mockResolvedValue({ rows: [mockResponse] });
     
@@ -286,8 +286,8 @@ describe('characters', () => {
                 role_id: 1,
                 ilvl: 300,
                 rio: 5000
-            }
-            const mockResponse = { id: 1, ...newCharacter }
+            };
+            const mockResponse = { id: 1, ...newCharacter };
     
             db.query.mockResolvedValue({ rows: [mockResponse] });
     
@@ -303,15 +303,15 @@ describe('characters', () => {
 
     describe("PUT characters", () => {
         it('Update a character', async () => {
-            const id = "3"
+            const id = "3";
             const updatedCharacter = {
                 name: "Radiant Viper",
                 class_id: 3,
                 role_id: 2,
                 ilvl: 555,
                 rio: 123
-            }
-            const mockResponse = { id: 3, ...updatedCharacter }
+            };
+            const mockResponse = { id: 3, ...updatedCharacter };
     
             db.query.mockResolvedValue({ rows: [mockResponse] });
     
@@ -329,14 +329,14 @@ describe('characters', () => {
         });
 
         it('Try update a character without "name" attribue', async () => {
-            const id = "3"
+            const id = "3";
             const updatedCharacter = {
                 class_id: 3,
                 role_id: 2,
                 ilvl: 555,
                 rio: 123
-            }
-            const mockResponse = { id: 3, ...updatedCharacter }
+            };
+            const mockResponse = { id: 3, ...updatedCharacter };
     
             db.query.mockResolvedValue({ rows: [mockResponse] });
     
@@ -350,14 +350,14 @@ describe('characters', () => {
         });
 
         it('Try update a character without "class_id" attribue', async () => {
-            const id = "3"
+            const id = "3";
             const updatedCharacter = {
                 name: "Radiant Viper",
                 role_id: 2,
                 ilvl: 555,
                 rio: 123
-            }
-            const mockResponse = { id: 3, ...updatedCharacter }
+            };
+            const mockResponse = { id: 3, ...updatedCharacter };
     
             db.query.mockResolvedValue({ rows: [mockResponse] });
     
@@ -371,14 +371,14 @@ describe('characters', () => {
         });
 
         it('Try update a character without "role_id" attribue', async () => {
-            const id = "3"
+            const id = "3";
             const updatedCharacter = {
                 name: "Radiant Viper",
                 class_id: 3,
                 ilvl: 555,
                 rio: 123
-            }
-            const mockResponse = { id: 3, ...updatedCharacter }
+            };
+            const mockResponse = { id: 3, ...updatedCharacter };
     
             db.query.mockResolvedValue({ rows: [mockResponse] });
     
@@ -392,14 +392,14 @@ describe('characters', () => {
         });
 
         it('Try update a character without "ilvl" attribue', async () => {
-            const id = "3"
+            const id = "3";
             const updatedCharacter = {
                 name: "Radiant Viper",
                 class_id: 3,
                 role_id: 2,
                 rio: 123
-            }
-            const mockResponse = { id: 3, ...updatedCharacter }
+            };
+            const mockResponse = { id: 3, ...updatedCharacter };
     
             db.query.mockResolvedValue({ rows: [mockResponse] });
     
@@ -413,14 +413,14 @@ describe('characters', () => {
         });
 
         it('Try update a character without "rio" attribue', async () => {
-            const id = "3"
+            const id = "3";
             const updatedCharacter = {
                 name: "Radiant Viper",
                 class_id: 3,
                 role_id: 2,
                 ilvl: 555
-            }
-            const mockResponse = { id: 3, ...updatedCharacter }
+            };
+            const mockResponse = { id: 3, ...updatedCharacter };
     
             db.query.mockResolvedValue({ rows: [mockResponse] });
     
@@ -434,15 +434,15 @@ describe('characters', () => {
         });
 
         it('Try update a character with a manus valus in "ilvl" attribue', async () => {
-            const id = "3"
+            const id = "3";
             const updatedCharacter = {
                 name: "Radiant Viper",
                 class_id: 3,
                 role_id: 2,
                 ilvl: -5,
                 rio: 123
-            }
-            const mockResponse = { id: 3, ...updatedCharacter }
+            };
+            const mockResponse = { id: 3, ...updatedCharacter };
     
             db.query.mockResolvedValue({ rows: [mockResponse] });
     
@@ -456,15 +456,15 @@ describe('characters', () => {
         });
 
         it('Try update a character with a valus over 645 in "ilvl" attribue', async () => {
-            const id = "3"
+            const id = "3";
             const updatedCharacter = {
                 name: "Radiant Viper",
                 class_id: 3,
                 role_id: 2,
                 ilvl: 650,
                 rio: 123
-            }
-            const mockResponse = { id: 3, ...updatedCharacter }
+            };
+            const mockResponse = { id: 3, ...updatedCharacter };
     
             db.query.mockResolvedValue({ rows: [mockResponse] });
     
@@ -478,15 +478,15 @@ describe('characters', () => {
         });
 
         it('Try update a character with a manus valus in "rio" attribue', async () => {
-            const id = "3"
+            const id = "3";
             const updatedCharacter = {
                 name: "Radiant Viper",
                 class_id: 3,
                 role_id: 2,
                 ilvl: 555,
                 rio: -8
-            }
-            const mockResponse = { id: 3, ...updatedCharacter }
+            };
+            const mockResponse = { id: 3, ...updatedCharacter };
     
             db.query.mockResolvedValue({ rows: [mockResponse] });
     
@@ -500,15 +500,15 @@ describe('characters', () => {
         });
 
         it('Try update a character with a valus over 4500 in "rio" attribue', async () => {
-            const id = "3"
+            const id = "3";
             const updatedCharacter = {
                 name: "Radiant Viper",
                 class_id: 3,
                 role_id: 2,
                 ilvl: 555,
                 rio: 5000
-            }
-            const mockResponse = { id: 3, ...updatedCharacter }
+            };
+            const mockResponse = { id: 3, ...updatedCharacter };
     
             db.query.mockResolvedValue({ rows: [mockResponse] });
     
@@ -524,7 +524,7 @@ describe('characters', () => {
 
     describe("DELETE characters", () => {
         it("Delete a character", async () => {
-            const id = "1"
+            const id = "1";
             db.query.mockResolvedValue({ rows: [{ id: id }]});
 
             const response = (await request(app).delete('/characters/' + id));

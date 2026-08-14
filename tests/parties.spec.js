@@ -43,7 +43,7 @@ describe('parties', () => {
             const mockParty = {
                     id: 2,
                     name: "Groupe 2",
-                }
+                };
         
             db.query.mockResolvedValue({ rows: [mockParty] });
         
@@ -73,7 +73,7 @@ describe('parties', () => {
                         class: "Evocateur"
                     }
                 ]
-            }
+            };
             const mockResponse = { id: 3, ...newParty };
 
             db.query.mockResolvedValue({ rows: [mockResponse] });
@@ -111,7 +111,7 @@ describe('parties', () => {
                         class: "Evocateur"
                     }
                 ]
-            }
+            };
             const mockResponse = { id: 3, ...newParty };
 
             db.query.mockResolvedValue({ rows: [mockResponse] });
@@ -128,7 +128,7 @@ describe('parties', () => {
         it('Try add a party without "characters" attribue', async () => {
             const newParty = {
                 name: 'Groupe 3'
-            }
+            };
             const mockResponse = { id: 3, ...newParty };
 
             db.query.mockResolvedValue({ rows: [mockResponse] });
@@ -183,7 +183,7 @@ describe('parties', () => {
                         class: "Druide"
                     },
                 ]
-            }
+            };
             const mockResponse = { id: 3, ...newParty };
 
             db.query.mockResolvedValue({ rows: [mockResponse] });
@@ -220,7 +220,7 @@ describe('parties', () => {
                         class: "Druide"
                     }
                 ]
-            }
+            };
             const mockResponse = { id: 3, ...newParty };
 
             db.query.mockResolvedValue({ rows: [mockResponse] });
@@ -257,7 +257,7 @@ describe('parties', () => {
                         class: "Druide"
                     }
                 ]
-            }
+            };
             const mockResponse = { id: 3, ...newParty };
 
             db.query.mockResolvedValue({ rows: [mockResponse] });
@@ -291,7 +291,7 @@ describe('parties', () => {
                         class: "Soigneur"
                     }
                 ]
-            }
+            };
             const mockResponse = { id: 3, ...updatedParty };
 
             db.query.mockResolvedValue({ rows: [mockResponse] });
@@ -329,7 +329,7 @@ describe('parties', () => {
                         class: "Evocateur"
                     }
                 ]
-            }
+            };
             const mockResponse = { id: 3, ...updatedParty };
 
             db.query.mockResolvedValue({ rows: [mockResponse] });
@@ -346,7 +346,7 @@ describe('parties', () => {
         it('Try update a party without "characters" attribue', async () => {
             const updatedParty = {
                 name: "Groupe 4"
-            }
+            };
             const mockResponse = { id: 3, ...updatedParty };
 
             db.query.mockResolvedValue({ rows: [mockResponse] });
@@ -401,7 +401,7 @@ describe('parties', () => {
                         class: "Druide"
                     },
                 ]
-            }
+            };
             const mockResponse = { id: 3, ...updatedParty };
 
             db.query.mockResolvedValue({ rows: [mockResponse] });
@@ -438,7 +438,7 @@ describe('parties', () => {
                         class: "Druide"
                     }
                 ]
-            }
+            };
             const mockResponse = { id: 3, ...updatedParty };
 
             db.query.mockResolvedValue({ rows: [mockResponse] });
@@ -475,7 +475,7 @@ describe('parties', () => {
                         class: "Druide"
                     }
                 ]
-            }
+            };
             const mockResponse = { id: 3, ...updatedParty };
 
             db.query.mockResolvedValue({ rows: [mockResponse] });
@@ -502,11 +502,11 @@ describe('parties', () => {
             expect(db.query).toHaveBeenCalledWith(
                 'DELETE FROM compose WHERE parties_id = $1',
                 [id]
-            )
+            );
             expect(db.query).toHaveBeenCalledWith(
                 'DELETE FROM parties WHERE id = $1',
                 [id]
-            )
-        })
-    })
+            );
+        });
+    });
 });

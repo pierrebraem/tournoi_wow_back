@@ -38,6 +38,6 @@ const checkPartiesInput = (req, res, next) => {
     }
 
     next();
-}
+};
 
 module.exports = checkPartiesInput;
