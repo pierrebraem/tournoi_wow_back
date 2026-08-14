@@ -6,17 +6,38 @@ on:
             - dev
 
 jobs:
-    test:
-        runs-on: ubuntu-latest
+    eslint:
+      runs-on: ubuntu-24.04
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
 
+        - name: Setup Node 26
+          uses: actions/setup-node@v4
+          with:
+            node-version: 26
+
+        - name: Install dependencies
+          run: npm ci
+
+        - name: Run Eslint
+          uses: sibiraj-s/action-eslint@v4
+          with:
+            token: ${{ secrets.GITHUB_TOKEN }}
+            extensions: js
+            working-directory: src
+            package-manager: npm
+          
+    tests:
+        runs-on: ubuntu-24.04
         steps:
             - name: Checkout repository
               uses: actions/checkout@v4
             
-            - name: Set up Node.js
+            - name: Setup Node 26
               uses: actions/setup-node@v4
               with:
-                node-version: '26'
+                node-version: 26
             
             - name: Install dependencies
               run: npm install
