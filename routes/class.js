@@ -6,7 +6,6 @@ const db = require('../db');
 router.get('/', async (req, res) => {
     try{
         const result = await db.query("SELECT * FROM class");
-        console.log("coucou")
         res.json(result.rows);
     }
     catch(err){
