@@ -10,7 +10,7 @@ router.get('/:id', async (req, res) => {
         res.json(result.rows);
     }
     catch(err){
-        console.log(err);
+        console.error(err);
         res.status(500).send({ "message": "Inernal Server Error" });
     }
 });
@@ -23,7 +23,7 @@ router.put('/', async (req, res) => {
         res.status(200).send({ "message": "Updated" });
     }
     catch(err){
-        console.log(err);
+        console.error(err);
         res.status(500).send({ "message": "Inernal Server Error" });
     }
 });

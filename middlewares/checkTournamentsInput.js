@@ -35,6 +35,6 @@ const checkTournamentsInput = (req, res, next) => {
     }
 
     next();
-}
+};
 
 module.exports = checkTournamentsInput;

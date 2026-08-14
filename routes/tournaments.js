@@ -5,14 +5,12 @@ const db = require('../db');
 
 // Route pour avoir tous les tournois
 router.get('/', async (req, res) => {
-    const body = req.body;
-
     try{
         const result = await db.query("SELECT * FROM tournament");
         res.json(result.rows);
     }
     catch(err){
-        console.log(err);
+        console.error(err);
         res.status(500).send({ "message": "Internal Server Error" });
     }
 });
@@ -35,7 +33,7 @@ router.post('/', checkTournamentsInput, async (req, res) => {
         res.status(201).send({ "message": "Created" });
     }
     catch(err){
-        console.log(err);
+        console.error(err);
         res.status(500).send({ "message": "Inernal Server Error" });
     }
 });
@@ -51,9 +49,9 @@ router.delete("/:id", async (req, res) => {
         res.status(200).send({ "message": "Deleted" });
     }
     catch(err){
-        console.log(err);
+        console.error(err);
         res.status(500).send({ "message": "Internal Server Error" });
     }
-})
+});
 
 module.exports = router;

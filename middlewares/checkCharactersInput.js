@@ -37,6 +37,6 @@ const checkCharactersInput = (req, res, next) => {
     }
 
     next();
-}
+};
 
 module.exports = checkCharactersInput;

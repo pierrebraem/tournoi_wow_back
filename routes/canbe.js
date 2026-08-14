@@ -11,7 +11,7 @@ router.get('/class/:idClass', async (req, res) => {
         res.json(roles.rows);
     }
     catch(err){
-        console.log(err);
+        console.error(err);
         res.status(500).send({ "message": "Internal Server Error" });
     }
 });
