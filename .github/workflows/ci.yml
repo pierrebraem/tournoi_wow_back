@@ -25,7 +25,6 @@ jobs:
           with:
             token: ${{ secrets.GITHUB_TOKEN }}
             extensions: js
-            working-directory: .
             package-manager: npm
           
     tests:
