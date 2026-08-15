@@ -6,7 +6,8 @@ const db = require('../db');
 // Route pour afficher toutes les personnages
 router.get('/', async (req, res) => {
     try{
-        const result = await db.query("SELECT characters.id, characters.name, class.label class, roles.label role, characters.ilvl, characters.rio FROM characters INNER JOIN class ON characters.class_id = class.id INNER JOIN roles ON characters.role_id = roles.id");
+        const result = await db.query("SELECT characters.id, class.label class, roles.label role, characters.ilvl, characters.rio FROM characters INNER JOIN class ON characters.class_id = class.id INNER JOIN roles ON characters.role_id = roles.id");
+        console.log("coucou");
         res.json(result.rows);
     }
     catch(err){
