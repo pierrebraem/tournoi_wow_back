@@ -3,7 +3,7 @@ const router = express.Router();
 const checkCharactersInput = require("../middlewares/checkCharactersInput");
 const db = require('../db');
 
-// Route pour afficher toutes les personnages
+// Route pour afficher tous les personnages
 router.get('/', async (req, res) => {
     try{
         const result = await db.query("SELECT characters.id, characters.name, class.label class, roles.label role, characters.ilvl, characters.rio FROM characters INNER JOIN class ON characters.class_id = class.id INNER JOIN roles ON characters.role_id = roles.id");
@@ -21,6 +21,12 @@ router.get('/:id', async (req, res) => {
 
     try{
         const result = await db.query("SELECT characters.id, characters.name, class.id class_id, class.label class_label, roles.id role_id, roles.label role_label, characters.ilvl, characters.rio FROM characters INNER JOIN class ON characters.class_id = class.id INNER JOIN roles ON characters.role_id = roles.id WHERE characters.id = $1", [id]);
+        
+        if(!result.rows[0]){
+            res.status(404).send({ "message": "Character not found" });
+            return;
+        }
+
         const character = result.rows[0];
 
         res.json({
@@ -65,7 +71,13 @@ router.put("/:id", checkCharactersInput, async (req, res) => {
     const body = req.body;
 
     try{
-        await db.query("UPDATE characters SET name = $2, class_id = $3, role_id = $4, ilvl = $5, rio = $6 WHERE id = $1", [id, body.name, body.class_id, body.role_id, body.ilvl, body.rio]);
+        const result = await db.query("UPDATE characters SET name = $2, class_id = $3, role_id = $4, ilvl = $5, rio = $6 WHERE id = $1", [id, body.name, body.class_id, body.role_id, body.ilvl, body.rio]);
+        
+        if(result.rowCount == 0){
+            res.status(404).send({ "message": "Character not found" });
+            return;
+        }
+
         res.status(200).send({ "message": "Updated" });
 
     }
@@ -79,6 +91,13 @@ router.delete("/:id", async (req, res) => {
     const id = req.params.id;
 
     try{
+        const checkIfCharacterExists = await db.query("SELECT id FROM characters WHERE id = $1", [id]);
+        
+        if(!checkIfCharacterExists.rows[0]){
+            res.status(404).send({ "message": "Character not found" });
+            return;
+        }
+
         await db.query("DELETE FROM compose WHERE characters_id = $1", [id]);
         await db.query("DELETE FROM characters WHERE id = $1", [id]);
         res.status(200).send({ "message": "Deleted" });

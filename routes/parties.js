@@ -21,6 +21,12 @@ router.get('/:id', async (req, res) => {
 
     try{
         const result = await db.query("SELECT * FROM parties WHERE id = $1", [id]);
+
+        if(!result.rows[0]){
+            res.status(404).send({ "message": "Party not found" });
+            return;
+        }
+
         const party = result.rows[0];
         
         res.json(party);
@@ -63,6 +69,13 @@ router.put('/:id', checkPartiesInput, async (req, res) => {
             return;
         }
 
+        const checkIfPartyExists = await db.query('SELECT id FROM parties WHERE id = $1', [id]);
+
+        if(!checkIfPartyExists.rows[0]){
+            res.status(404).send({ "message": "Party not found" });
+            return;
+        }
+
         await db.query('UPDATE parties SET name = $2 WHERE id = $1', [id, body.name]);
         
         const result = await db.query('SELECT * FROM compose WHERE parties_id = $1', [id]);
@@ -92,6 +105,13 @@ router.delete("/:id", async (req, res) => {
     const id = req.params.id;
 
     try{
+        const checkIfPartyExists = await db.query('SELECT id FROM parties WHERE id = $1', [id]);
+
+        if(!checkIfPartyExists.rows[0]){
+            res.status(404).send({ "message": "Party not found" });
+            return;
+        }
+        
         await db.query("DELETE FROM compose WHERE parties_id = $1", [id]);
         await db.query("DELETE FROM parties WHERE id = $1", [id]);
         res.status(200).send({ "message": "Deleted" });

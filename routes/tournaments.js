@@ -43,6 +43,13 @@ router.delete("/:id", async (req, res) => {
     const id = req.params.id;
 
     try{
+        const checkIfTournamentExists = await db.query("SELECT id FROM tournament WHERE id = $1", [id]);
+
+        if(!checkIfTournamentExists.rows[0]){
+            res.status(404).send({ "message": "Tournament not found" });
+            return;
+        }
+
         await db.query("DELETE FROM challenge WHERE tournament_id = $1", [id]);
         await db.query("DELETE FROM registered WHERE tournament_id = $1", [id]);
         await db.query("DELETE FROM tournament WHERE id = $1", [id]);

@@ -7,6 +7,13 @@ router.get('/:id', async (req, res) => {
     const id = req.params.id;
 
     try{
+        const checkIfPartyExists = await db.query('SELECT id FROM parties WHERE id = $1', [id]);
+
+        if(!checkIfPartyExists.rows[0]){
+            res.status(404).send({ "message" : "Party not found" });
+            return;
+        }
+
         const result = await db.query("SELECT characters.id, characters.name, class.id class_id, class.label class_label, roles.id role_id, roles.label role_label FROM compose INNER JOIN characters ON compose.characters_id = characters.id INNER JOIN class ON characters.class_id = class.id INNER JOIN roles ON characters.role_id = roles.id WHERE compose.parties_id = $1", [id]);
         const characters = result.rows;
         const formated = [];
