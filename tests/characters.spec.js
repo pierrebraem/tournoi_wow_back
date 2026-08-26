@@ -88,6 +88,16 @@ describe('characters', () => {
             expect(JSON.stringify(response.body)).toBe(JSON.stringify(expectedUser));
             expect(db.query).toHaveBeenCalledWith('SELECT characters.id, characters.name, class.id class_id, class.label class_label, roles.id role_id, roles.label role_label, characters.ilvl, characters.rio FROM characters INNER JOIN class ON characters.class_id = class.id INNER JOIN roles ON characters.role_id = roles.id WHERE characters.id = $1', [id]);
         });
+
+        it('Get 404 if character does not exist', async () => {
+            const id = "2";
+
+            db.query.mockResolvedValue({ rows: [] });
+            
+            const response = await request(app).get('/characters/' + id);
+            expect(response.status).toBe(404);
+            expect(response.body).toEqual({ "message" : "Character not found" });
+        });
     });
 
     describe('POST characters', () => {
@@ -328,6 +338,27 @@ describe('characters', () => {
             );
         });
 
+        it('Get 404 if character does not exist', async () => {
+            const id = "3";
+            const updatedCharacter = {
+                name: "Radiant Viper",
+                class_id: 3,
+                role_id: 2,
+                ilvl: 555,
+                rio: 123
+            };
+
+            db.query.mockResolvedValue({ rowCount: 0 });
+
+            const response = await request(app)
+            .put('/characters/' + id)
+            .send(updatedCharacter)
+            .set('Accept', 'application/json');
+
+            expect(response.status).toBe(404);
+            expect(response.body).toEqual({"message" : "Character not found"});
+        });
+
         it('Try update a character without "name" attribue', async () => {
             const id = "3";
             const updatedCharacter = {
@@ -535,6 +566,16 @@ describe('characters', () => {
                 'DELETE FROM characters WHERE id = $1',
                 [id]
             );
+        });
+
+        it('Get 404 if character does not exist', async () => {
+            const id = "1";
+            db.query.mockResolvedValue({ rows: [] });
+
+            const response = await request(app).delete('/characters/' + id);
+
+            expect(response.status).toBe(404);
+            expect(response.body).toEqual({"message": "Character not found"});
         });
     });
 });
