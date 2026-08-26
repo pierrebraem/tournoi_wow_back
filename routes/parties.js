@@ -64,11 +64,6 @@ router.put('/:id', checkPartiesInput, async (req, res) => {
     const body = req.body;
 
     try{
-        if(body.characters.length > 5){
-            res.status(400).send({ "message": "Limit of characters (5) per party exceeded" });
-            return;
-        }
-
         const checkIfPartyExists = await db.query('SELECT id FROM parties WHERE id = $1', [id]);
 
         if(!checkIfPartyExists.rows[0]){
