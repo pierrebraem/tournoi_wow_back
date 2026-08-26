@@ -53,6 +53,16 @@ describe('parties', () => {
             expect(JSON.stringify(response.body)).toBe(JSON.stringify(mockParty));
             expect(db.query).toHaveBeenCalledWith('SELECT * FROM parties WHERE id = $1', [id]);
         });
+
+        it('Get 404 if party does not exist', async () => {
+            const id = "2";
+
+            db.query.mockResolvedValue({ rows: [] });
+
+            const response = await request(app).get('/parties/' + id);
+            expect(response.status).toBe(404);
+            expect(response.body).toEqual({"message": "Party not found"});
+        });
     });
 
     describe('POST parties', () => {
@@ -313,6 +323,37 @@ describe('parties', () => {
             );
         });
 
+        it('Get 404 if party does not exist', async () => {
+            const id = "3";
+            const updatedParty = {
+                name: "Groupe 4",
+                characters: [
+                    {
+                        id: 1,
+                        name: "Intrepid Assassin",
+                        role: "Tank",
+                        class: "Druide"
+                    },
+                    {
+                        id: 2,
+                        name: "Mighty Raven",
+                        role: "Dégâts",
+                        class: "Soigneur"
+                    }
+                ]
+            };
+
+            db.query.mockResolvedValue({ rows: [] });
+
+            const response = await request(app)
+            .put('/parties/' + id)
+            .send(updatedParty)
+            .set('Accept', 'application/json');
+
+            expect(response.status).toBe(404);
+            expect(response.body).toEqual({"message": "Party not found"});
+        });
+
         it('Try update a party without "name" attribue', async () => {
             const updatedParty = {
                 characters: [
@@ -507,6 +548,16 @@ describe('parties', () => {
                 'DELETE FROM parties WHERE id = $1',
                 [id]
             );
+        });
+
+        it("Get 404 if party does not exist", async () => {
+            const id = "1";
+            db.query.mockResolvedValue({ rows: [] });
+
+            const response = await request(app).delete('/parties/' + id);
+
+            expect(response.status).toBe(404);
+            expect(response.body).toEqual({"message": "Party not found"});
         });
     });
 });

@@ -72,5 +72,15 @@ describe('compose', () => {
                 [id]
             );
         });
+
+        it('Get 404 if party does not exist', async () => {
+            const id = "2";
+
+            db.query.mockResolvedValue({ rows: [] });
+            
+            const response = await request(app).get('/compose/' + id);
+            expect(response.status).toBe(404);
+            expect(response.body).toEqual({"message": "Party not found"});
+        });
     });
 });
