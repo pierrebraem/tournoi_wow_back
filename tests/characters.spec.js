@@ -55,8 +55,6 @@ describe('characters', () => {
         });
 
         it('Get character details with id', async () => {
-            const id = "2";
-
             const mockUsers = [
                 {
                     id: 2,
@@ -82,19 +80,17 @@ describe('characters', () => {
 
             db.query.mockResolvedValue({ rows: mockUsers });
 
-            const response = await request(app).get('/characters/' + id);
+            const response = await request(app).get('/characters/2');
             expect(response.status).toBe(200);
 
             expect(JSON.stringify(response.body)).toBe(JSON.stringify(expectedUser));
-            expect(db.query).toHaveBeenCalledWith('SELECT characters.id, characters.name, class.id class_id, class.label class_label, roles.id role_id, roles.label role_label, characters.ilvl, characters.rio FROM characters INNER JOIN class ON characters.class_id = class.id INNER JOIN roles ON characters.role_id = roles.id WHERE characters.id = $1', [id]);
+            expect(db.query).toHaveBeenCalledWith('SELECT characters.id, characters.name, class.id class_id, class.label class_label, roles.id role_id, roles.label role_label, characters.ilvl, characters.rio FROM characters INNER JOIN class ON characters.class_id = class.id INNER JOIN roles ON characters.role_id = roles.id WHERE characters.id = $1', ["2"]);
         });
 
         it('Get 404 if character does not exist', async () => {
-            const id = "2";
-
             db.query.mockResolvedValue({ rows: [] });
             
-            const response = await request(app).get('/characters/' + id);
+            const response = await request(app).get('/characters/2');
             expect(response.status).toBe(404);
             expect(response.body).toEqual({ "message" : "Character not found" });
         });
@@ -313,7 +309,6 @@ describe('characters', () => {
 
     describe("PUT characters", () => {
         it('Update a character', async () => {
-            const id = "3";
             const updatedCharacter = {
                 name: "Radiant Viper",
                 class_id: 3,
@@ -326,7 +321,7 @@ describe('characters', () => {
             db.query.mockResolvedValue({ rows: [mockResponse] });
     
             const response = await request(app)
-            .put('/characters/' + id)
+            .put('/characters/3')
             .send(updatedCharacter)
             .set('Accept', 'application/json');
 
@@ -334,12 +329,11 @@ describe('characters', () => {
             expect(response.body).toEqual({"message": "Updated"});
             expect(db.query).toHaveBeenCalledWith(
                 "UPDATE characters SET name = $2, class_id = $3, role_id = $4, ilvl = $5, rio = $6 WHERE id = $1", 
-                [id, updatedCharacter.name, updatedCharacter.class_id, updatedCharacter.role_id, updatedCharacter.ilvl, updatedCharacter.rio]
+                ["3", updatedCharacter.name, updatedCharacter.class_id, updatedCharacter.role_id, updatedCharacter.ilvl, updatedCharacter.rio]
             );
         });
 
         it('Get 404 if character does not exist', async () => {
-            const id = "3";
             const updatedCharacter = {
                 name: "Radiant Viper",
                 class_id: 3,
@@ -351,7 +345,7 @@ describe('characters', () => {
             db.query.mockResolvedValue({ rowCount: 0 });
 
             const response = await request(app)
-            .put('/characters/' + id)
+            .put('/characters/3')
             .send(updatedCharacter)
             .set('Accept', 'application/json');
 
@@ -360,7 +354,6 @@ describe('characters', () => {
         });
 
         it('Try update a character without "name" attribue', async () => {
-            const id = "3";
             const updatedCharacter = {
                 class_id: 3,
                 role_id: 2,
@@ -372,7 +365,7 @@ describe('characters', () => {
             db.query.mockResolvedValue({ rows: [mockResponse] });
     
             const response = await request(app)
-            .put('/characters/' + id)
+            .put('/characters/3')
             .send(updatedCharacter)
             .set('Accept', 'application/json');
 
@@ -381,7 +374,6 @@ describe('characters', () => {
         });
 
         it('Try update a character without "class_id" attribue', async () => {
-            const id = "3";
             const updatedCharacter = {
                 name: "Radiant Viper",
                 role_id: 2,
@@ -393,7 +385,7 @@ describe('characters', () => {
             db.query.mockResolvedValue({ rows: [mockResponse] });
     
             const response = await request(app)
-            .put('/characters/' + id)
+            .put('/characters/3')
             .send(updatedCharacter)
             .set('Accept', 'application/json');
 
@@ -402,7 +394,6 @@ describe('characters', () => {
         });
 
         it('Try update a character without "role_id" attribue', async () => {
-            const id = "3";
             const updatedCharacter = {
                 name: "Radiant Viper",
                 class_id: 3,
@@ -414,7 +405,7 @@ describe('characters', () => {
             db.query.mockResolvedValue({ rows: [mockResponse] });
     
             const response = await request(app)
-            .put('/characters/' + id)
+            .put('/characters/3')
             .send(updatedCharacter)
             .set('Accept', 'application/json');
 
@@ -423,7 +414,6 @@ describe('characters', () => {
         });
 
         it('Try update a character without "ilvl" attribue', async () => {
-            const id = "3";
             const updatedCharacter = {
                 name: "Radiant Viper",
                 class_id: 3,
@@ -435,7 +425,7 @@ describe('characters', () => {
             db.query.mockResolvedValue({ rows: [mockResponse] });
     
             const response = await request(app)
-            .put('/characters/' + id)
+            .put('/characters/3')
             .send(updatedCharacter)
             .set('Accept', 'application/json');
 
@@ -444,7 +434,6 @@ describe('characters', () => {
         });
 
         it('Try update a character without "rio" attribue', async () => {
-            const id = "3";
             const updatedCharacter = {
                 name: "Radiant Viper",
                 class_id: 3,
@@ -456,7 +445,7 @@ describe('characters', () => {
             db.query.mockResolvedValue({ rows: [mockResponse] });
     
             const response = await request(app)
-            .put('/characters/' + id)
+            .put('/characters/3')
             .send(updatedCharacter)
             .set('Accept', 'application/json');
 
@@ -465,7 +454,6 @@ describe('characters', () => {
         });
 
         it('Try update a character with a manus valus in "ilvl" attribue', async () => {
-            const id = "3";
             const updatedCharacter = {
                 name: "Radiant Viper",
                 class_id: 3,
@@ -478,7 +466,7 @@ describe('characters', () => {
             db.query.mockResolvedValue({ rows: [mockResponse] });
     
             const response = await request(app)
-            .put('/characters/' + id)
+            .put('/characters/3')
             .send(updatedCharacter)
             .set('Accept', 'application/json');
 
@@ -487,7 +475,6 @@ describe('characters', () => {
         });
 
         it('Try update a character with a valus over 645 in "ilvl" attribue', async () => {
-            const id = "3";
             const updatedCharacter = {
                 name: "Radiant Viper",
                 class_id: 3,
@@ -500,7 +487,7 @@ describe('characters', () => {
             db.query.mockResolvedValue({ rows: [mockResponse] });
     
             const response = await request(app)
-            .put('/characters/' + id)
+            .put('/characters/3')
             .send(updatedCharacter)
             .set('Accept', 'application/json');
 
@@ -509,7 +496,6 @@ describe('characters', () => {
         });
 
         it('Try update a character with a manus valus in "rio" attribue', async () => {
-            const id = "3";
             const updatedCharacter = {
                 name: "Radiant Viper",
                 class_id: 3,
@@ -522,7 +508,7 @@ describe('characters', () => {
             db.query.mockResolvedValue({ rows: [mockResponse] });
     
             const response = await request(app)
-            .put('/characters/' + id)
+            .put('/characters/3')
             .send(updatedCharacter)
             .set('Accept', 'application/json');
 
@@ -531,7 +517,6 @@ describe('characters', () => {
         });
 
         it('Try update a character with a valus over 4500 in "rio" attribue', async () => {
-            const id = "3";
             const updatedCharacter = {
                 name: "Radiant Viper",
                 class_id: 3,
@@ -544,7 +529,7 @@ describe('characters', () => {
             db.query.mockResolvedValue({ rows: [mockResponse] });
     
             const response = await request(app)
-            .put('/characters/' + id)
+            .put('/characters/3')
             .send(updatedCharacter)
             .set('Accept', 'application/json');
 
@@ -555,24 +540,26 @@ describe('characters', () => {
 
     describe("DELETE characters", () => {
         it("Delete a character", async () => {
-            const id = "1";
-            db.query.mockResolvedValue({ rows: [{ id: id }]});
+            db.query.mockResolvedValue({ rows: [{ id: 1 }]});
 
-            const response = (await request(app).delete('/characters/' + id));
+            const response = (await request(app).delete('/characters/1'));
 
             expect(response.status).toBe(200);
             expect(response.body).toEqual({ message: 'Deleted' });
             expect(db.query).toHaveBeenCalledWith(
+                'DELETE FROM compose WHERE characters_id = $1',
+                ["1"]
+            );
+            expect(db.query).toHaveBeenCalledWith(
                 'DELETE FROM characters WHERE id = $1',
-                [id]
+                ["1"]
             );
         });
 
         it('Get 404 if character does not exist', async () => {
-            const id = "1";
             db.query.mockResolvedValue({ rows: [] });
 
-            const response = await request(app).delete('/characters/' + id);
+            const response = await request(app).delete('/characters/1');
 
             expect(response.status).toBe(404);
             expect(response.body).toEqual({"message": "Character not found"});

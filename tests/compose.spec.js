@@ -17,8 +17,6 @@ afterEach(() => {
 describe('compose', () => {
     describe('GET composes', () => {
         it('Get all characters of a party', async () => {
-            const id = "1";
-
             const mockDbRows = [
                 {
                     id: 1,
@@ -63,22 +61,20 @@ describe('compose', () => {
 
             db.query.mockResolvedValue({ rows: mockDbRows });
 
-            const response = await request(app).get('/compose/' + id);
+            const response = await request(app).get('/compose/1');
             expect(response.status).toBe(200);
 
             expect(JSON.stringify(response.body)).toBe(JSON.stringify(expectedComposes));
             expect(db.query).toHaveBeenCalledWith(
                 'SELECT characters.id, characters.name, class.id class_id, class.label class_label, roles.id role_id, roles.label role_label FROM compose INNER JOIN characters ON compose.characters_id = characters.id INNER JOIN class ON characters.class_id = class.id INNER JOIN roles ON characters.role_id = roles.id WHERE compose.parties_id = $1',
-                [id]
+                ["1"]
             );
         });
 
         it('Get 404 if party does not exist', async () => {
-            const id = "2";
-
             db.query.mockResolvedValue({ rows: [] });
             
-            const response = await request(app).get('/compose/' + id);
+            const response = await request(app).get('/compose/2');
             expect(response.status).toBe(404);
             expect(response.body).toEqual({"message": "Party not found"});
         });

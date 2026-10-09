@@ -39,7 +39,6 @@ describe('parties', () => {
         });
 
         it('Get party details with id', async () => {
-            const id = "2";
             const mockParty = {
                     id: 2,
                     name: "Groupe 2",
@@ -47,19 +46,17 @@ describe('parties', () => {
         
             db.query.mockResolvedValue({ rows: [mockParty] });
         
-            const response = await request(app).get('/parties/' + id);
+            const response = await request(app).get('/parties/2');
             expect(response.status).toBe(200);
         
             expect(JSON.stringify(response.body)).toBe(JSON.stringify(mockParty));
-            expect(db.query).toHaveBeenCalledWith('SELECT * FROM parties WHERE id = $1', [id]);
+            expect(db.query).toHaveBeenCalledWith('SELECT * FROM parties WHERE id = $1', ["2"]);
         });
 
         it('Get 404 if party does not exist', async () => {
-            const id = "2";
-
             db.query.mockResolvedValue({ rows: [] });
 
-            const response = await request(app).get('/parties/' + id);
+            const response = await request(app).get('/parties/2');
             expect(response.status).toBe(404);
             expect(response.body).toEqual({"message": "Party not found"});
         });
@@ -284,7 +281,6 @@ describe('parties', () => {
 
     describe('PUT parties', () => {
         it('Update a character', async () => {
-            const id = "3";
             const updatedParty = {
                 name: "Groupe 4",
                 characters: [
@@ -307,7 +303,7 @@ describe('parties', () => {
             db.query.mockResolvedValue({ rows: [mockResponse] });
 
             const response = await request(app)
-            .put('/parties/' + id)
+            .put('/parties/3')
             .send(updatedParty)
             .set('Accept', 'application/json');
 
@@ -315,16 +311,15 @@ describe('parties', () => {
             expect(response.body).toEqual({"message": "Updated"});
             expect(db.query).toHaveBeenCalledWith(
                 'UPDATE parties SET name = $2 WHERE id = $1',
-                [id, updatedParty.name]
+                ["3", updatedParty.name]
             );
             expect(db.query).toHaveBeenCalledWith(
                 'SELECT * FROM compose WHERE parties_id = $1',
-                [id]
+                ["3"]
             );
         });
 
         it('Get 404 if party does not exist', async () => {
-            const id = "3";
             const updatedParty = {
                 name: "Groupe 4",
                 characters: [
@@ -346,7 +341,7 @@ describe('parties', () => {
             db.query.mockResolvedValue({ rows: [] });
 
             const response = await request(app)
-            .put('/parties/' + id)
+            .put('/parties/3')
             .send(updatedParty)
             .set('Accept', 'application/json');
 
@@ -376,7 +371,7 @@ describe('parties', () => {
             db.query.mockResolvedValue({ rows: [mockResponse] });
 
             const response = await request(app)
-            .put('/parties/' + 3)
+            .put('/parties/3')
             .send(updatedParty)
             .set('Accept', 'application/json');
 
@@ -393,7 +388,7 @@ describe('parties', () => {
             db.query.mockResolvedValue({ rows: [mockResponse] });
 
             const response = await request(app)
-            .put('/parties/' + 3)
+            .put('/parties/3')
             .send(updatedParty)
             .set('Accept', 'application/json');
 
@@ -448,7 +443,7 @@ describe('parties', () => {
             db.query.mockResolvedValue({ rows: [mockResponse] });
 
             const response = await request(app)
-            .put('/parties/' + 3)
+            .put('/parties/3')
             .send(updatedParty)
             .set('Accept', 'application/json');
 
@@ -485,7 +480,7 @@ describe('parties', () => {
             db.query.mockResolvedValue({ rows: [mockResponse] });
 
             const response = await request(app)
-            .put('/parties/' + 3)
+            .put('/parties/3')
             .send(updatedParty)
             .set('Accept', 'application/json');
 
@@ -522,7 +517,7 @@ describe('parties', () => {
             db.query.mockResolvedValue({ rows: [mockResponse] });
 
             const response = await request(app)
-            .put('/parties/' + 3)
+            .put('/parties/3')
             .send(updatedParty)
             .set('Accept', 'application/json');
 
@@ -533,28 +528,26 @@ describe('parties', () => {
 
     describe("DELETE parties", () => {
         it("Delete a party", async () => {
-            const id = "1";
-            db.query.mockResolvedValue({ rows: [{ id: id }]});
+            db.query.mockResolvedValue({ rows: [{ id: 1 }]});
 
-            const response = await request(app).delete('/parties/' + id);
+            const response = await request(app).delete('/parties/1');
 
             expect(response.status).toBe(200);
             expect(response.body).toEqual({ 'message': 'Deleted' });
             expect(db.query).toHaveBeenCalledWith(
                 'DELETE FROM compose WHERE parties_id = $1',
-                [id]
+                ["1"]
             );
             expect(db.query).toHaveBeenCalledWith(
                 'DELETE FROM parties WHERE id = $1',
-                [id]
+                ["1"]
             );
         });
 
         it("Get 404 if party does not exist", async () => {
-            const id = "1";
             db.query.mockResolvedValue({ rows: [] });
 
-            const response = await request(app).delete('/parties/' + id);
+            const response = await request(app).delete('/parties/1');
 
             expect(response.status).toBe(404);
             expect(response.body).toEqual({"message": "Party not found"});
