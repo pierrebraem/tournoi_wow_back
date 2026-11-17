@@ -1,12 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const dungeosRouter = require('../routes/dungeos');
+const dungeonsRouter = require('../routes/dungeons');
 const db = require('../db');
 const request = require('supertest');
 
 const app = express();
 app.use(bodyParser.json());
-app.use('/dungeos', dungeosRouter);
+app.use('/dungeons', dungeonsRouter);
 
 jest.mock('../db');
 
@@ -14,13 +14,13 @@ afterEach(() => {
     jest.clearAllMocks();
 });
 
-describe('dungeos', () => {
-    describe('GET dungeos', () => {
-        it('Get all dungeos', async () => {
-            const mockDungeos = [
+describe('dungeons', () => {
+    describe('GET dungeons', () => {
+        it('Get all dungeons', async () => {
+            const mockDungeons = [
                 {
                     id: 1,
-                    name: "Pierre's dungeos",
+                    name: "Pierre's dungeons",
                     level: 10,
                     timer: '30:00'
                 },
@@ -38,13 +38,13 @@ describe('dungeos', () => {
                 }
             ];
 
-            db.query.mockResolvedValue({ rows: mockDungeos });
+            db.query.mockResolvedValue({ rows: mockDungeons });
 
-            const response = await request(app).get('/dungeos');
+            const response = await request(app).get('/dungeons');
             expect(response.status).toBe(200);
             expect(response.body.length).toBe(3);
 
-            expect(JSON.stringify(response.body)).toBe(JSON.stringify(mockDungeos));
+            expect(JSON.stringify(response.body)).toBe(JSON.stringify(mockDungeons));
             expect(db.query).toHaveBeenCalledWith('SELECT * FROM dungeon');
         });
     });
