@@ -20,7 +20,7 @@ const tournamentsRouter = require('./routes/tournaments');
 const classRouter = require('./routes/class');
 const canbeRouter = require('./routes/canbe');
 const composeRouter = require('./routes/compose');
-const dungeonRouter = require('./routes/dungeos');
+const dungeonRouter = require('./routes/dungeons');
 const registeredRouter = require('./routes/registered');
 const challengeRouter = require('./routes/challenge');
 
@@ -30,7 +30,7 @@ app.use('/tournaments', tournamentsRouter);
 app.use('/class', classRouter);
 app.use('/canbe', canbeRouter);
 app.use('/compose', composeRouter);
-app.use('/dungeos', dungeonRouter);
+app.use('/dungeons', dungeonRouter);
 app.use('/registered', registeredRouter);
 app.use('/challenge', challengeRouter);
 
